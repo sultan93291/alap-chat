@@ -1,0 +1,36 @@
+.container {
+  height: auto;
+  width: auto;
+  margin: 0 100px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  column-gap: 40px;
+  position: relative;
+  width: 100%;
+}
+
+.components_wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 80%;
+}
+
+.chats_wrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 33px;
+}
+
+.fd_grp_wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.users_block_wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

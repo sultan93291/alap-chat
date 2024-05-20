@@ -1,0 +1,247 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Nunito", sans-serif;
+  overflow-y: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+ul,
+ol {
+  list-style-type: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  line-height: normal;
+}
+
+a {
+  text-decoration: none;
+}
+
+.Box_root {
+  height: 1000px;
+  width: 756px;
+  background-color: #fff;
+  padding-top: 225px;
+  padding-left: 190px;
+  padding-bottom: 119px;
+}
+
+.img_box {
+  height: 1000px;
+  width: 850px;
+  position: relative;
+}
+
+.img_box img {
+  height: 100%;
+  width: 100%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.heading_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.form_box {
+  display: flex;
+  flex-direction: column;
+  gap: 61.5px;
+}
+
+.inp_btn_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 51.8px;
+}
+
+.inp_Wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 56.76px;
+}
+
+.inp_Wrapper div {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+}
+
+.inp_Wrapper div p {
+  text-transform: capitalize;
+  color: red;
+  font-weight: 500;
+}
+
+.btn_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 35.06px;
+}
+
+.txt_link {
+  display: flex;
+  flex-direction: row;
+  color: #03014c;
+  font-family: "Open Sans";
+  padding-left: 25px;
+  font-size: 13.33px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.link_wrapper {
+  width: 368px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.link_wrapper p {
+  margin-left: 20px;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+.link_wrapper span {
+  display: flex;
+  gap: 5px;
+}
+
+.loginInp_Wrapper {
+  width: 372px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 60.85px;
+  position: relative;
+}
+
+.loginInp_Wrapper div {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+}
+.loginInp_Wrapper div input {
+  width: 100%;
+  color: #03014c;
+  font-family: "Open Sans";
+  font-size: 20.006px;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.loginInp_Wrapper div p {
+  text-transform: capitalize;
+  color: red;
+  font-weight: 500;
+}
+
+.loginInp_Wrapper input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.1);
+  padding-top: 30px;
+  font-size: 20px;
+}
+
+.loginInp_Wrapper input:focus::placeholder {
+  color: #03014c;
+}
+
+.login_heading_wrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+}
+
+.login_btn_wrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 35px;
+  border-radius: 8px;
+}
+
+.login_btn_wrapper button {
+  width: 424.902px;
+  height: 81.846px;
+  flex-shrink: 0;
+  background-color: #5f34f5;
+  font-size: 20px;
+  text-transform: capitalize;
+}
+
+.cross {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 15px;
+  margin-right: 20px;
+  color: red;
+  font-weight: 300;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.loader {
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login_img_wrapper {
+  width: 220.904px;
+  height: 62.52px;
+  transform: rotate(-0.443deg);
+  border-radius: 8.336px;
+  border: 0.834px solid rgba(3, 1, 76,0.3);
+  display: flex;
+  column-gap: 10px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.login_img_wrapper img {
+  height: 19.263px;
+  width: 19.263px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.login_img_wrapper p {
+  color: #03014c;
+  font-family: "Open Sans";
+  font-size: 15.338px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: 0.267px;
+  text-transform: capitalize;
+}
