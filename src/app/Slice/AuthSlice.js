@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  value: window.localStorage.getItem("loggedinUser")
-    ? JSON.parse(window.localStorage.getItem("loggedinUser"))
+  value: typeof window !== 'undefined' && localStorage.getItem("loggedinUser")
+    ? JSON.parse(localStorage.getItem("loggedinUser"))
     : null,
 };
 

@@ -184,8 +184,10 @@ export default function Home() {
             if (userCredentials.user.emailVerified) {
               const user = userCredentials;
               toast("Login success");
-              localStorage.setItem("loggedinUser", JSON.stringify(user));
-              dispatch(loggedInUser(user));
+              if (typeof window !== "undefined") {
+                localStorage.setItem("loggedinUser", JSON.stringify(user));
+                dispatch(loggedInUser(user));
+              }
               setTimeout(() => {
                 router.push("/home");
               }, 2000);
