@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import "./request.css";
 import { Button, Typography } from "@mui/material";
@@ -6,7 +6,10 @@ import { HiOutlineDotsVertical } from "react-icons/hi";
 import Avatar from "@mui/material/Avatar";
 import SingleRequest from "../SingleRequest/SingleRequest";
 
-const RequestComponents = ({ requName , isBtn }) => {
+
+const RequestComponents = ({ requName, isBtn }) => {
+
+
   const txt = "dummu txt";
   const dummyUsers = [
     { name: "goodenough", txt: txt, img: "/sultan.jpg" },
@@ -18,7 +21,9 @@ const RequestComponents = ({ requName , isBtn }) => {
     { name: "john", txt: txt, img: "/sultan.jpg" },
   ];
   return (
-    <div className={requName === "group request" ?"request-box" : "fd_request"}>
+    <div
+      className={requName === "group request" ? "request-box" : "fd_request"}
+    >
       <Box>
         <div className="heading-wrapper">
           <Typography variant="p" component="p">

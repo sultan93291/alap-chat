@@ -1,11 +1,14 @@
-import React from 'react'
-import SingleRequest from '../RequestComponents/SingleRequest/SingleRequest';
-import { HiOutlineDotsVertical } from 'react-icons/hi';
-import { Typography } from '@mui/material';
-import { Box } from '@mui/system';
-import "./Friends_Groups.css"
+"use client";
+import React, { useState, useEffect } from "react";
+import SingleRequest from "../RequestComponents/SingleRequest/SingleRequest";
+import { HiOutlineDotsVertical } from "react-icons/hi";
+import { Typography } from "@mui/material";
+import { Box } from "@mui/system";
+import "./Friends_Groups.css";
+
 
 const Friends_Groups_Components = ({ requName, isBtn }) => {
+  const [Users, setUsers] = useState([]);
   const txt = "dummu txt";
   const dummyUsers = [
     { name: "goodenough", txt: txt, img: "/sultan.jpg" },
@@ -16,10 +19,11 @@ const Friends_Groups_Components = ({ requName, isBtn }) => {
     { name: "john doe", txt: txt, img: "/sultan.jpg" },
     { name: "john", txt: txt, img: "/sultan.jpg" },
   ];
+
+
+
   return (
-    <div
-      className={requName === "groups" ? "request-box" : "fd_request"}
-    >
+    <div className={requName === "groups" ? "request-box" : "fd_request"}>
       <Box>
         <div className="heading-wrapper">
           <Typography variant="p" component="p">
@@ -43,4 +47,4 @@ const Friends_Groups_Components = ({ requName, isBtn }) => {
   );
 };
 
-export default Friends_Groups_Components
+export default Friends_Groups_Components;

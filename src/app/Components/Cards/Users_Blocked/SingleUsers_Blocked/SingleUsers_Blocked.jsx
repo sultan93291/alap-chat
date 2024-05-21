@@ -2,7 +2,10 @@ import React from "react";
 import "./SingleUsers_Blocke.css";
 import { Avatar, Button, Typography } from "@mui/material";
 import { IoIosAdd } from "react-icons/io";
-const SingleUsers_Blocked = ({ src, heading, time, block }) => {
+const SingleUsers_Blocked = ({ src, heading, time, block, onClick }) => {
+  const handleUserReq = () => {
+    alert("working");
+  };
   return (
     <div className="user-details">
       <div className="user-img">
@@ -27,7 +30,7 @@ const SingleUsers_Blocked = ({ src, heading, time, block }) => {
           unblock
         </Button>
       ) : (
-        <div className="users_add">
+        <div className="users_add" onClick={onClick}>
           <IoIosAdd className="add" />
         </div>
       )}

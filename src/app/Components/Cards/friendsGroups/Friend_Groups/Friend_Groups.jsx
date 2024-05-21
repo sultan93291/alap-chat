@@ -7,7 +7,26 @@ import { HiOutlineDotsVertical } from "react-icons/hi";
 import SingleFriends_Groups from "../singleFriendsGroups/SingleFriends_Groups";
 import "./friendsGroups.css"
 
+
 const Friend_Group = ({ variant }) => {
+    // useEffect(() => {
+    //   const db = getDatabase();
+    //   const starCountRef = ref(db, "/users");
+    //   let arr = [];
+    //   onValue(starCountRef, snapShot => {
+    //     console.log("hello world");
+    //     snapShot.forEach(item => {
+    //       const data = item.val();
+    //       const id = item.key;
+    //       const Data = {
+    //         data: data,
+    //         id: id,
+    //       };
+    //       arr.push(Data);
+    //     });
+    //   });
+    //   setUsers(arr);
+    // }, []);
   const txt = "dummy txt";
   const time = "today , 8:56 pm";
   const dummyUsers = [

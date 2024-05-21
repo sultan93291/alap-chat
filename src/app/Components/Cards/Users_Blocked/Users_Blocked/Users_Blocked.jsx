@@ -1,12 +1,53 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Users_Blocked.css";
 import Box from "@mui/material/Box";
 
 import { Button, Typography } from "@mui/material";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import SingleUsers_Blocked from "../SingleUsers_Blocked/SingleUsers_Blocked";
+import {
+  getDatabase,
+  ref,
+  onValue,
+  update,
+  set,
+  push,
+} from "firebase/database";
+import firebaseConfig from "@/app/Config/firebaseConfig/firebaseConfig";
+import { useSelector } from "react-redux";
 
 const Users_Blocked = ({ variant, block }) => {
+  const loggedInUserData = useSelector(state => state.user.value);
+
+  const [Users, setUsers] = useState([]);
+  useEffect(() => {
+    const db = getDatabase();
+    const starCountRef = ref(db, "/users");
+    let arr = [];
+    onValue(starCountRef, snapShot => {
+      snapShot.forEach(item => {
+        if (item.key !== loggedInUserData.uid) {
+          arr.push({ ...item.val(), id: item.key });
+        }
+      });
+
+      setUsers(arr);
+    });
+  }, []);
+
+  const handleUserReq = userData => {
+    const db = getDatabase();
+    set(push(ref(db, "fdRequInfo")), {
+      senderName: loggedInUserData.displayName,
+      senderEmail: loggedInUserData.email,
+      senderPhotoUrl: loggedInUserData?.photoURL,
+      senderUid: loggedInUserData.uid,
+      reciverName: userData.userName,
+      reciverEmail: userData.email,
+      reciverPhotoUrl: userData.photoUrl,
+      reciverUid: userData.userId,
+    });
+  };
   const txt = "dummy txt";
   const time = "today , 8:56pm ";
   const dummyUsers = [
@@ -28,13 +69,14 @@ const Users_Blocked = ({ variant, block }) => {
           <HiOutlineDotsVertical className="dot" />
         </div>
         <div className="users_wrapper">
-          {dummyUsers.map((user, index) => (
+          {Users.map((user, index) => (
             <SingleUsers_Blocked
               key={index}
-              src={user.img}
-              heading={user.name}
+              src={user.photoUrl}
+              heading={user.userName}
               time={time}
               block={block}
+              onClick={() => handleUserReq(user)}
             />
           ))}
         </div>

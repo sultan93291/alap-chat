@@ -48,6 +48,11 @@
   font-size: 18px;
   text-transform: capitalize;
   font-weight: 600;
+  white-space: nowrap;       
+  overflow: hidden;          
+  text-overflow: ellipsis;
+  width: 150px;
+
 }
 
 .requ_info p {

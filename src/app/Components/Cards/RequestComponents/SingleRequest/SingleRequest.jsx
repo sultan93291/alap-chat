@@ -3,6 +3,7 @@ import React from "react";
 import "./singleRequest.css";
 
 const SingleRequest = ({ src, heading, subHeading, isBtn }) => {
+  
   return (
     <div className="req-details">
       <div className="req-img">
@@ -23,6 +24,7 @@ const SingleRequest = ({ src, heading, subHeading, isBtn }) => {
           style={{ height: "37px", width: "87px", background: "#5F35F5" }}
           type="submit"
           variant="contained"
+        
         >
           {" "}
           accept{" "}

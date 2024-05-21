@@ -55,6 +55,10 @@
   font-size: 14px;
   font-weight: 600;
   text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100px;
 }
 
 .user_info p {
@@ -78,7 +82,7 @@
   cursor: pointer;
 }
 
-.users_add  .add{
+.users_add .add {
   color: #fff;
   z-index: 555;
 }
