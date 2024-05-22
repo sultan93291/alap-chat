@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+"use client"
 import Box from "@mui/material/Box";
 import "./request.css";
 import { Button, Typography } from "@mui/material";
