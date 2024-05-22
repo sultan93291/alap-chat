@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useEffect } from "react";
 import "./Users_Blocked.css";
 import Box from "@mui/material/Box";
