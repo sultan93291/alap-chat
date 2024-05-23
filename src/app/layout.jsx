@@ -1,8 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ProviderWrapper from "./Components/ProviderWrapper/ProviderWrapper";
-
-
+import RouteController from "./Components/RouteController/RouteController";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,8 +15,8 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <ProviderWrapper>
-          {children}
-       </ProviderWrapper>
+          <RouteController>{children}</RouteController>
+        </ProviderWrapper>
       </body>
     </html>
   );

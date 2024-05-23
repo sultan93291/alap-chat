@@ -27,7 +27,7 @@ const Users_Blocked = ({ variant, block }) => {
     let arr = [];
     onValue(starCountRef, snapShot => {
       snapShot.forEach(item => {
-        if (item.key !== loggedInUserData.uid) {
+        if (item.key !== loggedInUserData?.uid) {
           arr.push({ ...item.val(), id: item.key });
         }
       });
