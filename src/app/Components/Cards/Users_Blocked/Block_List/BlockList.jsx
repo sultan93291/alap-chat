@@ -1,10 +1,11 @@
 "use client";
+import React, { useState, useEffect } from "react";
+import "../Users_List/Users_Blocked.css";
 import Box from "@mui/material/Box";
-import "./request.css";
+
 import { Button, Typography } from "@mui/material";
 import { HiOutlineDotsVertical } from "react-icons/hi";
-import Avatar from "@mui/material/Avatar";
-import SingleRequest from "../SingleRequest/SingleRequest";
+import SingleUsers_Blocked from "../SingleUsers_Blocked/SingleUsers_Blocked";
 import {
   getDatabase,
   ref,
@@ -15,27 +16,43 @@ import {
 } from "firebase/database";
 import firebaseConfig from "@/app/Config/firebaseConfig/firebaseConfig";
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
 
-const RequestComponents = ({ requName, isBtn }) => {
+const BlockList = ({ variant, block }) => {
   const loggedInUserData = useSelector(state => state.user.value);
-  const [fdRequest, setfdRequest] = useState([]);
+
+  
+
+  const [Users, setUsers] = useState([]);
   useEffect(() => {
     const db = getDatabase();
-    const starCountRef = ref(db, "/fdRequInfo");
+    const starCountRef = ref(db, "/users");
     let arr = [];
     onValue(starCountRef, snapShot => {
       snapShot.forEach(item => {
-        if (item.val().reciverUid !== loggedInUserData?.uid) {
+        if (item.key !== loggedInUserData?.uid) {
           arr.push({ ...item.val(), id: item.key });
         }
       });
 
-      setfdRequest(arr);
+      setUsers(arr);
     });
   }, []);
- 
-  const txt = "dummu txt";
+
+  const handleUserReq = userData => {
+    const db = getDatabase();
+    set(push(ref(db, "fdRequInfo")), {
+      senderName: loggedInUserData.displayName,
+      senderEmail: loggedInUserData.email,
+      senderPhotoUrl: loggedInUserData?.photoURL,
+      senderUid: loggedInUserData.uid,
+      reciverName: userData.userName,
+      reciverEmail: userData.email,
+      reciverPhotoUrl: userData.photoUrl,
+      reciverUid: userData.userId,
+    });
+  };
+  const txt = "dummy txt";
+  const time = "today , 8:56pm ";
   const dummyUsers = [
     { name: "goodenough", txt: txt, img: "/sultan.jpg" },
     { name: "dekhtechi", txt: txt, img: "/sultan.jpg" },
@@ -46,24 +63,23 @@ const RequestComponents = ({ requName, isBtn }) => {
     { name: "john", txt: txt, img: "/sultan.jpg" },
   ];
   return (
-    <div
-      className={requName === "group request" ? "request-box" : "fd_request"}
-    >
+    <div className="group-box">
       <Box>
         <div className="heading-wrapper">
           <Typography variant="p" component="p">
-            {requName}
+            {variant}
           </Typography>
           <HiOutlineDotsVertical className="dot" />
         </div>
-        <div className="master_wrapper">
-          {fdRequest.map((user, index) => (
-            <SingleRequest
+        <div className="users_wrapper">
+          {dummyUsers.map((user, index) => (
+            <SingleUsers_Blocked
               key={index}
-              src={user.reciverPhotoUrl}
-              heading={user.reciverName}
-              subHeading={"dummy"}
-              isBtn={isBtn}
+              src={"/sultan.jpg"}
+              heading={user.userName}
+              time={time}
+              block={block}
+              onClick={() => handleUserReq(user)}
             />
           ))}
         </div>
@@ -72,4 +88,4 @@ const RequestComponents = ({ requName, isBtn }) => {
   );
 };
 
-export default RequestComponents;
+export default BlockList;

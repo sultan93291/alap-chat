@@ -49,7 +49,7 @@ const RouteController = ({ children }) => {
       return;
     }
     const handleRouteChange = url => {
-       setPathName(new URL(url, window.location.origin).pathname);
+      setPathName(new URL(url, window.location.origin).pathname);
     };
 
     router.events.on("routeChangeComplete", handleRouteChange);
@@ -78,7 +78,7 @@ const RouteController = ({ children }) => {
         />
       </div>
     );
-  } else if(!Loading) {
+  } else if (!Loading) {
     return children;
   }
 };

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 import "./Users_Blocked.css";
 import Box from "@mui/material/Box";
@@ -17,10 +17,27 @@ import {
 import firebaseConfig from "@/app/Config/firebaseConfig/firebaseConfig";
 import { useSelector } from "react-redux";
 
-const Users_Blocked = ({ variant, block }) => {
+const Users_List = ({ variant, block }) => {
   const loggedInUserData = useSelector(state => state.user.value);
 
   const [Users, setUsers] = useState([]);
+
+  const [fdRequest, setfdRequest] = useState([]);
+  useEffect(() => {
+    const db = getDatabase();
+    const starCountRef = ref(db, "/fdRequInfo");
+    let arr = [];
+    onValue(starCountRef, snapShot => {
+      snapShot.forEach(item => {
+        if (item.val().reciverUid !== loggedInUserData?.uid) {
+          arr.push({ ...item.val(), id: item.key });
+        }
+      });
+
+      setfdRequest(arr);
+    });
+  }, []);
+
   useEffect(() => {
     const db = getDatabase();
     const starCountRef = ref(db, "/users");
@@ -28,6 +45,20 @@ const Users_Blocked = ({ variant, block }) => {
     onValue(starCountRef, snapShot => {
       snapShot.forEach(item => {
         if (item.key !== loggedInUserData?.uid) {
+          // if (fdRequest !== null && fdRequest[0].senderUid) {
+          //   console.log(fdRequest)
+          //   fdRequest.map((fdrequ, index) => {
+          //     console.log("hoitache kaj");
+          //     console.log(
+          //       `Index: ${index}, Sender: ${fdrequ.senderUid}, Receiver: ${fdrequ.reciverUid}`
+          //     );
+          //     // Add your condition and code here
+          //     // if (item.key !== fdrequ.reciverUid || fdrequ.senderUid) {
+          //     // }
+          //   });
+          // } else {
+          //   console.log("something wrong")
+          // }
           arr.push({ ...item.val(), id: item.key });
         }
       });
@@ -86,4 +117,4 @@ const Users_Blocked = ({ variant, block }) => {
   );
 };
 
-export default Users_Blocked;
+export default Users_List;
