@@ -2,7 +2,7 @@ import { Avatar, Button, Typography } from "@mui/material";
 import React from "react";
 import "./singleRequest.css";
 
-const SingleRequest = ({ src, heading, subHeading, isBtn }) => {
+const SingleRequest = ({ src, heading, subHeading, isBtn, onClick }) => {
   
   return (
     <div className="req-details">
@@ -24,7 +24,7 @@ const SingleRequest = ({ src, heading, subHeading, isBtn }) => {
           style={{ height: "37px", width: "87px", background: "#5F35F5" }}
           type="submit"
           variant="contained"
-        
+          onClick={onClick}
         >
           {" "}
           accept{" "}

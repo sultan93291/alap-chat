@@ -34,6 +34,10 @@ const RequestComponents = ({ requName, isBtn }) => {
       setfdRequest(arr);
     });
   }, []);
+
+  const handleAccept = (request) => {
+    console.log(request)
+  }
  
   const txt = "dummu txt";
   const dummyUsers = [
@@ -64,6 +68,7 @@ const RequestComponents = ({ requName, isBtn }) => {
               heading={user.reciverName}
               subHeading={"dummy"}
               isBtn={isBtn}
+              onClick={()=>handleAccept(user)}
             />
           ))}
         </div>

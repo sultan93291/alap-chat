@@ -16,6 +16,7 @@ import {
 } from "firebase/database";
 import firebaseConfig from "@/app/Config/firebaseConfig/firebaseConfig";
 import { useSelector } from "react-redux";
+import { handleBreakpoints } from "@mui/system";
 
 const Users_List = ({ variant, block }) => {
   const loggedInUserData = useSelector(state => state.user.value);
@@ -23,51 +24,8 @@ const Users_List = ({ variant, block }) => {
   const [Users, setUsers] = useState([]);
 
   const [fdRequest, setfdRequest] = useState([]);
-  useEffect(() => {
-    const db = getDatabase();
-    const starCountRef = ref(db, "/fdRequInfo");
-    let arr = [];
-    onValue(starCountRef, snapShot => {
-      snapShot.forEach(item => {
-        if (item.val().reciverUid !== loggedInUserData?.uid) {
-          arr.push({ ...item.val(), id: item.key });
-        }
-      });
 
-      setfdRequest(arr);
-    });
-  }, []);
-
-  useEffect(() => {
-    const db = getDatabase();
-    const starCountRef = ref(db, "/users");
-    let arr = [];
-    onValue(starCountRef, snapShot => {
-      snapShot.forEach(item => {
-        if (item.key !== loggedInUserData?.uid) {
-          // if (fdRequest !== null && fdRequest[0].senderUid) {
-          //   console.log(fdRequest)
-          //   fdRequest.map((fdrequ, index) => {
-          //     console.log("hoitache kaj");
-          //     console.log(
-          //       `Index: ${index}, Sender: ${fdrequ.senderUid}, Receiver: ${fdrequ.reciverUid}`
-          //     );
-          //     // Add your condition and code here
-          //     // if (item.key !== fdrequ.reciverUid || fdrequ.senderUid) {
-          //     // }
-          //   });
-          // } else {
-          //   console.log("something wrong")
-          // }
-          arr.push({ ...item.val(), id: item.key });
-        }
-      });
-
-      setUsers(arr);
-    });
-  }, []);
-
-  const handleUserReq = userData => {
+  const HandleUserReq = userData => {
     const db = getDatabase();
     set(push(ref(db, "fdRequInfo")), {
       senderName: loggedInUserData.displayName,
@@ -80,6 +38,62 @@ const Users_List = ({ variant, block }) => {
       reciverUid: userData.userId,
     });
   };
+  useEffect(() => {
+    const db = getDatabase();
+    const starCountRef = ref(db, "/fdRequInfo");
+    let arr = [];
+
+    onValue(starCountRef, snapShot => {
+      snapShot.forEach(item => {
+        if (
+          item.val().senderUid !== loggedInUserData?.uid &&
+          item.val().reciverUid !== loggedInUserData?.uid
+        ) {
+          arr.push({ ...item.val(), id: item.key });
+        }
+      });
+
+      setfdRequest(arr);
+    });
+  }, [HandleUserReq]);
+
+  useEffect(() => {
+    const db = getDatabase();
+    const starCountRef = ref(db, "/users");
+    const starCountRef1 = ref(db, "/fdRequInfo");
+    let arr1 = [];
+    onValue(starCountRef1, snapShot => {
+      snapShot.forEach(item => {
+        arr1.push({ ...item.val(), id: item.key });
+      });
+    });
+
+    let arr = [];
+    onValue(starCountRef, snapShot => {
+      snapShot.forEach(item => {
+        if (item.key !== loggedInUserData?.uid) {
+          arr.push({ ...item.val(), id: item.key });
+        }
+      });
+      let filteredArr = [];
+      arr.map((item, index) => {
+        if (arr1.length > 0) {
+          arr1.map((requ, index) => {
+            if (
+              item.userId !== requ.reciverUid &&
+              item.userId !== requ.senderUid
+            ) {
+              filteredArr.push({ ...item });
+            }
+          });
+          setUsers(filteredArr);
+        } else {
+          setUsers(arr);
+        }
+      });
+    });
+  }, [HandleUserReq]);
+
   const txt = "dummy txt";
   const time = "today , 8:56pm ";
   const dummyUsers = [
@@ -108,7 +122,7 @@ const Users_List = ({ variant, block }) => {
               heading={user.userName}
               time={time}
               block={block}
-              onClick={() => handleUserReq(user)}
+              onClick={() => HandleUserReq(user)}
             />
           ))}
         </div>
