@@ -1,32 +1,63 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 
 import Box from "@mui/material/Box";
 
 import { Button, Typography } from "@mui/material";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import SingleFriends_Groups from "../singleFriendsGroups/SingleFriends_Groups";
-import "./friendsGroups.css"
-
-
+import "./friendsGroups.css";
+import {
+  getDatabase,
+  ref,
+  onValue,
+  update,
+  set,
+  push,
+} from "firebase/database";
+import firebaseConfig from "@/app/Config/firebaseConfig/firebaseConfig";
+import { useSelector } from "react-redux";
 const Friend_Group = ({ variant }) => {
-    // useEffect(() => {
-    //   const db = getDatabase();
-    //   const starCountRef = ref(db, "/users");
-    //   let arr = [];
-    //   onValue(starCountRef, snapShot => {
-    //     console.log("hello world");
-    //     snapShot.forEach(item => {
-    //       const data = item.val();
-    //       const id = item.key;
-    //       const Data = {
-    //         data: data,
-    //         id: id,
-    //       };
-    //       arr.push(Data);
-    //     });
-    //   });
-    //   setUsers(arr);
-    // }, []);
+  const [friends, setfriends] = useState([]);
+  const loggedInUserData = useSelector(state => state.user.value);
+
+  useEffect(() => {
+    const db = getDatabase();
+    const starCountRef = ref(db, "/friends");
+    let arr = [];
+    onValue(starCountRef, snapShot => {
+      snapShot.forEach(item => {
+        if (item.val().senderUid !== loggedInUserData?.uid) {
+          const user = { ...item.val() };
+          const userInfo = {
+            userName: user.senderName,
+            userPhoto: user.senderPhotoUrl,
+            userEmail: user.senderEmail,
+            userId: user.senderUid,
+            key: item.key,
+          };
+
+          arr.push(userInfo);
+        } else if (item.val().reciverUid !== loggedInUserData?.uid) {
+          const user = { ...item.val() };
+
+          const userInfo = {
+            userName: user.reciverName,
+            userPhoto: user.reciverPhotoUrl,
+            userEmail: user.reciverEmail,
+            userId: user.reciverUid,
+            key: item.key,
+          };
+          arr.push(userInfo);
+        }
+      });
+
+      setfriends(arr);
+    });
+  }, []);
+
+  console.log(friends);
+
   const txt = "dummy txt";
   const time = "today , 8:56 pm";
   const dummyUsers = [
@@ -48,11 +79,11 @@ const Friend_Group = ({ variant }) => {
           <HiOutlineDotsVertical className="dot" />
         </div>
         <div className="fd_wrapper">
-          {dummyUsers.map((user, index) => (
+          {friends.map((user, index) => (
             <SingleFriends_Groups
               key={index}
-              src={user.img}
-              heading={user.name}
+              src={user.userPhoto}
+              heading={user.userName}
               subHeading={user.txt}
               time={time}
             />

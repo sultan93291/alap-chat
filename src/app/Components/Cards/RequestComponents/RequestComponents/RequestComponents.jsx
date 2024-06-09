@@ -20,35 +20,63 @@ import { useEffect, useState } from "react";
 const RequestComponents = ({ requName, isBtn }) => {
   const loggedInUserData = useSelector(state => state.user.value);
   const [fdRequest, setfdRequest] = useState([]);
+
   useEffect(() => {
     const db = getDatabase();
     const starCountRef = ref(db, "/fdRequInfo");
+    const starCountRefFd = ref(db, "/friends");
+    const fdArr = [];
+    onValue(starCountRefFd, snapShot => {
+      snapShot.forEach(item => {
+        console.log(item.val());
+        fdArr.push({ ...item.val(), id: item.key });
+      });
+    });
+
     let arr = [];
     onValue(starCountRef, snapShot => {
-      snapShot.forEach(item => {
-        if (item.val().reciverUid !== loggedInUserData?.uid) {
-          arr.push({ ...item.val(), id: item.key });
-        }
-      });
-
-      setfdRequest(arr);
+      if (fdArr.length > 0) {
+        fdArr.map((friends, index) => {
+          snapShot.forEach(item => {
+            if (
+              item.val().senderUid !== loggedInUserData?.uid &&
+              item.val().reciverUid !== friends.reciverUid
+            ) {
+              arr.push({ ...item.val(), id: item.key });
+            }
+          });
+          setfdRequest(arr);
+        });
+      } else {
+        snapShot.forEach(item => {
+          console.log(item.val());
+          if (item.val().senderUid !== loggedInUserData?.uid) {
+            arr.push({ ...item.val(), id: item.key });
+          }
+        });
+        setfdRequest(arr);
+      }
     });
   }, []);
 
-  const handleAccept = (request) => {
-    console.log(request)
-  }
- 
-  const txt = "dummu txt";
-  const dummyUsers = [
-    { name: "goodenough", txt: txt, img: "/sultan.jpg" },
-    { name: "dekhtechi", txt: txt, img: "/sultan.jpg" },
-    { name: "jai hok", txt: txt, img: "/sultan.jpg" },
-    { name: "kando", txt: txt, img: "/sultan.jpg" },
-    { name: "elahi", txt: txt, img: "/sultan.jpg" },
-    { name: "john doe", txt: txt, img: "/sultan.jpg" },
-    { name: "john", txt: txt, img: "/sultan.jpg" },
-  ];
+  console.log(fdRequest);
+
+  const handleAccept = request => {
+    console.log(request);
+    const db = getDatabase();
+    set(push(ref(db, "friends")), {
+      senderName: request.senderName,
+      senderEmail: request.senderEmail,
+      senderPhotoUrl: request.senderPhotoUrl,
+      senderUid: request.senderUid,
+      reciverName: request.reciverName,
+      reciverEmail: request.reciverEmail,
+      reciverPhotoUrl: request.reciverPhotoUrl,
+      reciverUid: request.reciverUid,
+    });
+    console.log(request);
+  };
+
   return (
     <div
       className={requName === "group request" ? "request-box" : "fd_request"}
@@ -64,11 +92,11 @@ const RequestComponents = ({ requName, isBtn }) => {
           {fdRequest.map((user, index) => (
             <SingleRequest
               key={index}
-              src={user.reciverPhotoUrl}
-              heading={user.reciverName}
+              src={user.senderPhotoUrl}
+              heading={user.senderName}
               subHeading={"dummy"}
               isBtn={isBtn}
-              onClick={()=>handleAccept(user)}
+              onClick={() => handleAccept(user)}
             />
           ))}
         </div>

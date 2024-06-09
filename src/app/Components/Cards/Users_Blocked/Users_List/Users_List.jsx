@@ -30,11 +30,13 @@ const Users_List = ({ variant, block }) => {
     set(push(ref(db, "fdRequInfo")), {
       senderName: loggedInUserData.displayName,
       senderEmail: loggedInUserData.email,
-      senderPhotoUrl: loggedInUserData?.photoURL,
+      senderPhotoUrl: loggedInUserData?.photoURL
+        ? loggedInUserData?.photoURL
+        : "null",
       senderUid: loggedInUserData.uid,
       reciverName: userData.userName,
       reciverEmail: userData.email,
-      reciverPhotoUrl: userData.photoUrl,
+      reciverPhotoUrl: userData.photoUrl ? userData.photoUrl : "null",
       reciverUid: userData.userId,
     });
   };
@@ -55,7 +57,7 @@ const Users_List = ({ variant, block }) => {
 
       setfdRequest(arr);
     });
-  }, [HandleUserReq]);
+  }, []);
 
   useEffect(() => {
     const db = getDatabase();
@@ -92,7 +94,7 @@ const Users_List = ({ variant, block }) => {
         }
       });
     });
-  }, [HandleUserReq]);
+  }, []);
 
   const txt = "dummy txt";
   const time = "today , 8:56pm ";
