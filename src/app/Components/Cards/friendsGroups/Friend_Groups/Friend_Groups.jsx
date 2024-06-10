@@ -36,11 +36,9 @@ const Friend_Group = ({ variant }) => {
             userId: user.senderUid,
             key: item.key,
           };
-
           arr.push(userInfo);
         } else if (item.val().reciverUid !== loggedInUserData?.uid) {
           const user = { ...item.val() };
-
           const userInfo = {
             userName: user.reciverName,
             userPhoto: user.reciverPhotoUrl,
