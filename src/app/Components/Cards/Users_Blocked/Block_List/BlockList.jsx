@@ -76,7 +76,7 @@ const BlockList = ({ variant, block }) => {
             <SingleUsers_Blocked
               key={index}
               src={"/sultan.jpg"}
-              heading={user.userName}
+              heading={user.name}
               time={time}
               block={block}
               onClick={() => handleUserReq(user)}

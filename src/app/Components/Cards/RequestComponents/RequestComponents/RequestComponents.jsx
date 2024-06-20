@@ -1,7 +1,7 @@
 "use client";
 import Box from "@mui/material/Box";
 import "./request.css";
-import { Button, Typography } from "@mui/material";
+import { Alert, Button, Typography } from "@mui/material";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import Avatar from "@mui/material/Avatar";
 import SingleRequest from "../SingleRequest/SingleRequest";
@@ -12,14 +12,37 @@ import {
   update,
   set,
   push,
+  remove,
 } from "firebase/database";
 import firebaseConfig from "@/app/Config/firebaseConfig/firebaseConfig";
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 const RequestComponents = ({ requName, isBtn }) => {
   const loggedInUserData = useSelector(state => state.user.value);
   const [fdRequest, setfdRequest] = useState([]);
+  const [Trigger, setTrigger] = useState(false);
+
+  const handleAccept = useCallback(request => {
+    console.log(request);
+    const db = getDatabase();
+    set(push(ref(db, "friends")), {
+      senderName: request.senderName,
+      senderEmail: request.senderEmail,
+      senderPhotoUrl: request.senderPhotoUrl,
+      senderUid: request.senderUid,
+      reciverName: request.reciverName,
+      reciverEmail: request.reciverEmail,
+      reciverPhotoUrl: request.reciverPhotoUrl,
+      reciverUid: request.reciverUid,
+    }).then(() => {
+      remove(ref(db, "fdRequInfo/" + request.id)).then(() => {
+        console.log("successfully deleted fd requ");
+      });
+      setTrigger(prev => !prev);
+      console.log("successfully added to fd list");
+    });
+  }, []);
 
   useEffect(() => {
     const db = getDatabase();
@@ -35,47 +58,15 @@ const RequestComponents = ({ requName, isBtn }) => {
 
     let arr = [];
     onValue(starCountRef, snapShot => {
-      if (fdArr.length > 0) {
-        fdArr.map((friends, index) => {
-          snapShot.forEach(item => {
-            if (
-              item.val().senderUid !== loggedInUserData?.uid &&
-              item.val().reciverUid !== friends.reciverUid
-            ) {
-              arr.push({ ...item.val(), id: item.key });
-            }
-          });
-          setfdRequest(arr);
-        });
-      } else {
-        snapShot.forEach(item => {
-          console.log(item.val());
-          if (item.val().senderUid !== loggedInUserData?.uid) {
-            arr.push({ ...item.val(), id: item.key });
-          }
-        });
-        setfdRequest(arr);
-      }
+      snapShot.forEach(item => {
+        console.log(item.val().reciverUid);
+        if (item.val().reciverUid == loggedInUserData?.uid) {
+          arr.push({ ...item.val(), id: item.key });
+        }
+      });
+      setfdRequest(arr);
     });
-  }, []);
-
-  console.log(fdRequest);
-
-  const handleAccept = request => {
-    console.log(request);
-    const db = getDatabase();
-    set(push(ref(db, "friends")), {
-      senderName: request.senderName,
-      senderEmail: request.senderEmail,
-      senderPhotoUrl: request.senderPhotoUrl,
-      senderUid: request.senderUid,
-      reciverName: request.reciverName,
-      reciverEmail: request.reciverEmail,
-      reciverPhotoUrl: request.reciverPhotoUrl,
-      reciverUid: request.reciverUid,
-    });
-    console.log(request);
-  };
+  }, [Trigger, loggedInUserData]);
 
   return (
     <div
@@ -89,16 +80,20 @@ const RequestComponents = ({ requName, isBtn }) => {
           <HiOutlineDotsVertical className="dot" />
         </div>
         <div className="master_wrapper">
-          {fdRequest.map((user, index) => (
-            <SingleRequest
-              key={index}
-              src={user.senderPhotoUrl}
-              heading={user.senderName}
-              subHeading={"dummy"}
-              isBtn={isBtn}
-              onClick={() => handleAccept(user)}
-            />
-          ))}
+          {fdRequest.length > 0 ? (
+            fdRequest.map((user, index) => (
+              <SingleRequest
+                key={index}
+                src={user.senderPhotoUrl}
+                heading={user.senderName}
+                subHeading={"dummy"}
+                isBtn={isBtn}
+                onClick={() => handleAccept(user)}
+              />
+            ))
+          ) : (
+            <Alert severity="info">No Request </Alert>
+          )}
         </div>
       </Box>
     </div>

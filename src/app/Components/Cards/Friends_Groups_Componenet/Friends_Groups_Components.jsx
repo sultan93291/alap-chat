@@ -2,23 +2,58 @@
 import React, { useState, useEffect } from "react";
 import SingleRequest from "../RequestComponents/SingleRequest/SingleRequest";
 import { HiOutlineDotsVertical } from "react-icons/hi";
-import { Typography } from "@mui/material";
+import { Alert, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import "./Friends_Groups.css";
+import {
+  getDatabase,
+  ref,
+  onValue,
+  update,
+  set,
+  push,
+} from "firebase/database";
+import firebaseConfig from "@/app/Config/firebaseConfig/firebaseConfig";
+import { useSelector } from "react-redux";
 
 
 const Friends_Groups_Components = ({ requName, isBtn }) => {
   const [Users, setUsers] = useState([]);
-  const txt = "dummu txt";
-  const dummyUsers = [
-    { name: "goodenough", txt: txt, img: "/sultan.jpg" },
-    { name: "dekhtechi", txt: txt, img: "/sultan.jpg" },
-    { name: "jai hok", txt: txt, img: "/sultan.jpg" },
-    { name: "kando", txt: txt, img: "/sultan.jpg" },
-    { name: "elahi", txt: txt, img: "/sultan.jpg" },
-    { name: "john doe", txt: txt, img: "/sultan.jpg" },
-    { name: "john", txt: txt, img: "/sultan.jpg" },
-  ];
+  const [friends, setfriends] = useState([]);
+  const loggedInUserData = useSelector(state => state.user.value);
+
+  useEffect(() => {
+    const db = getDatabase();
+    const starCountRef = ref(db, "/friends");
+    let arr = [];
+    onValue(starCountRef, snapShot => {
+      snapShot.forEach(item => {
+        if (item.val().senderUid !== loggedInUserData?.uid) {
+          const user = { ...item.val() };
+          const userInfo = {
+            userName: user.senderName,
+            userPhoto: user.senderPhotoUrl,
+            userEmail: user.senderEmail,
+            userId: user.senderUid,
+            key: item.key,
+          };
+          arr.push(userInfo);
+        } else if (item.val().reciverUid !== loggedInUserData?.uid) {
+          const user = { ...item.val() };
+          const userInfo = {
+            userName: user.reciverName,
+            userPhoto: user.reciverPhotoUrl,
+            userEmail: user.reciverEmail,
+            userId: user.reciverUid,
+            key: item.key,
+          };
+          arr.push(userInfo);
+        }
+      });
+
+      setfriends(arr);
+    });
+  }, []);
 
 
 
@@ -32,15 +67,19 @@ const Friends_Groups_Components = ({ requName, isBtn }) => {
           <HiOutlineDotsVertical className="dot" />
         </div>
         <div className="master_wrapper">
-          {dummyUsers.map((user, index) => (
-            <SingleRequest
-              key={index}
-              src={user.img}
-              heading={user.name}
-              subHeading={user.txt}
-              isBtn={isBtn}
-            />
-          ))}
+          {friends.length > 0 ? (
+            friends.map((user, index) => (
+              <SingleRequest
+                key={index}
+                src={user.userPhoto}
+                heading={user.userName}
+                subHeading={null}
+                isBtn={isBtn}
+              />
+            ))
+          ) : (
+            <Alert severity="info">No friends</Alert>
+          )}
         </div>
       </Box>
     </div>

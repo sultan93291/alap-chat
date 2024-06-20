@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import Box from "@mui/material/Box";
 
-import { Button, Typography } from "@mui/material";
+import { Alert, Button, Typography } from "@mui/material";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import SingleFriends_Groups from "../singleFriendsGroups/SingleFriends_Groups";
 import "./friendsGroups.css";
@@ -54,8 +54,6 @@ const Friend_Group = ({ variant }) => {
     });
   }, []);
 
-  console.log(friends);
-
   const txt = "dummy txt";
   const time = "today , 8:56 pm";
   const dummyUsers = [
@@ -77,15 +75,19 @@ const Friend_Group = ({ variant }) => {
           <HiOutlineDotsVertical className="dot" />
         </div>
         <div className="fd_wrapper">
-          {friends.map((user, index) => (
-            <SingleFriends_Groups
-              key={index}
-              src={user.userPhoto}
-              heading={user.userName}
-              subHeading={user.txt}
-              time={time}
-            />
-          ))}
+          {friends.length > 0 ? (
+            friends.map((user, index) => (
+              <SingleFriends_Groups
+                key={index}
+                src={user.userPhoto}
+                heading={user.userName}
+                subHeading={user.txt}
+                time={time}
+              />
+            ))
+          ) : (
+            <Alert severity="info">No friends</Alert>
+          )}
         </div>
       </Box>
     </div>
