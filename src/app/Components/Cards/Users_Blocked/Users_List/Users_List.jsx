@@ -24,6 +24,7 @@ const Users_List = ({ variant, block }) => {
   const loggedInUserData = useSelector(state => state.user.value);
   const [Users, setUsers] = useState([]);
   const [fdRequest, setfdRequest] = useState([]);
+  const [Isfriend, setIsFriend] = useState([]);
 
   const HandleUserReq = useCallback(
     userData => {
@@ -60,6 +61,7 @@ const Users_List = ({ variant, block }) => {
     let allRequ = [];
     let requId = [];
     let fdArr = [];
+    let isFdArr = [];
 
     onValue(fdRef, snapShot => {
       snapShot.forEach(item => {
@@ -98,13 +100,18 @@ const Users_List = ({ variant, block }) => {
               }
             });
 
-            fdArr.forEach((fd, index) => {
-              if (item.key == fd.reciverUid || item.key == fd.senderUid) {
-                isbtn = false;
+            fdArr.forEach((fd) => {
+              isFdArr = []
+              console.log(fd);
+              if (loggedInUserData.uid == fd.senderUid) {
+                isFdArr.push(fd.senderUid + fd.reciverUid);
+              } else if (loggedInUserData.uid == fd.reciverUid) {
+                isFdArr.push(fd.reciverUid + fd.senderUid);
               }
             });
+            setIsFriend(isFdArr);
 
-            arr.push({ ...item.val(), id: item.key, isRequ, requId, isbtn });
+            arr.push({ ...item.val(), id: item.key, isRequ, requId, isFdArr });
           }
         });
         setUsers(arr);
@@ -123,6 +130,7 @@ const Users_List = ({ variant, block }) => {
     { name: "john doe", txt: txt, img: "/sultan.jpg" },
     { name: "john", txt: txt, img: "/sultan.jpg" },
   ];
+  console.log(Isfriend);
   return (
     <div className="group-box">
       <Box>
@@ -135,6 +143,10 @@ const Users_List = ({ variant, block }) => {
         <div className="users_wrapper">
           {Users.length > 0 ? (
             Users.map((user, index) => {
+              console.log(Isfriend);
+              // console.log(loggedInUserData.uid + user.id);
+              // console.log(user.id + loggedInUserData.uid);
+
               return (
                 <SingleUsers_Blocked
                   key={index}
@@ -142,7 +154,12 @@ const Users_List = ({ variant, block }) => {
                   heading={user.userName}
                   time={time}
                   block={block}
-                  isbtn={user.isbtn}
+                  isbtn={
+                    Isfriend.includes(loggedInUserData.uid + user.id) ||
+                    Isfriend.includes(user.id + loggedInUserData.uid)
+                      ? false
+                      : true
+                  }
                   onClick={
                     fdRequest.includes(loggedInUserData.uid + user.id) ||
                     fdRequest.includes(user.id + loggedInUserData.uid)

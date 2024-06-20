@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-
 import Box from "@mui/material/Box";
 
 import { Alert, Button, Typography } from "@mui/material";
@@ -56,15 +55,7 @@ const Friend_Group = ({ variant }) => {
 
   const txt = "dummy txt";
   const time = "today , 8:56 pm";
-  const dummyUsers = [
-    { name: "goodenough", txt: txt, img: "/sultan.jpg" },
-    { name: "dekhtechi", txt: txt, img: "/sultan.jpg" },
-    { name: "jai hok", txt: txt, img: "/sultan.jpg" },
-    { name: "kando", txt: txt, img: "/sultan.jpg" },
-    { name: "elahi", txt: txt, img: "/sultan.jpg" },
-    { name: "john doe", txt: txt, img: "/sultan.jpg" },
-    { name: "john", txt: txt, img: "/sultan.jpg" },
-  ];
+  
   return (
     <div className="group-box">
       <Box>

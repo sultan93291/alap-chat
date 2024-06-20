@@ -1,11 +1,28 @@
 import { Avatar, Button, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./singleRequest.css";
 
-const SingleRequest = ({ src, heading, subHeading, isBtn, onClick }) => {
-  
+const SingleRequest = ({
+  src,
+  heading,
+  subHeading,
+  isBtn,
+  onClick,
+  msgClick,
+}) => {
+  const [path, setPath] = useState("");
+
+  useEffect(() => {
+    const path = window.location.pathname;
+    setPath(path);
+  }, []);
+
+  const SingleUserCursor = {
+    cursor: path == "/chat" ? "pointer" : "default",
+  };
+
   return (
-    <div className="req-details">
+    <div className="req-details" onClick={msgClick} style={SingleUserCursor}>
       <div className="req-img">
         <div>
           <Avatar alt=" not found " src={src} sx={{ width: 70, height: 70 }} />

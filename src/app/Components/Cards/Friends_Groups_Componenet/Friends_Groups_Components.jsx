@@ -14,13 +14,15 @@ import {
   push,
 } from "firebase/database";
 import firebaseConfig from "@/app/Config/firebaseConfig/firebaseConfig";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { msgReciver } from "@/app/Slice/msgReciverSlice";
 
 const Friends_Groups_Components = ({ requName, isBtn }) => {
   const [Users, setUsers] = useState([]);
   const [friends, setfriends] = useState([]);
   const loggedInUserData = useSelector(state => state.user.value);
+  const msgUserData = useSelector(state => state.msgReciverInfo.value);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const db = getDatabase();
@@ -28,7 +30,10 @@ const Friends_Groups_Components = ({ requName, isBtn }) => {
     let arr = [];
     onValue(starCountRef, snapShot => {
       snapShot.forEach(item => {
-        if (item.val().senderUid !== loggedInUserData?.uid) {
+        if (
+          item.val().senderUid !== loggedInUserData?.uid &&
+          item.val().reciverUid == loggedInUserData.uid
+        ) {
           const user = { ...item.val() };
           const userInfo = {
             userName: user.senderName,
@@ -38,7 +43,10 @@ const Friends_Groups_Components = ({ requName, isBtn }) => {
             key: item.key,
           };
           arr.push(userInfo);
-        } else if (item.val().reciverUid !== loggedInUserData?.uid) {
+        } else if (
+          item.val().reciverUid !== loggedInUserData?.uid &&
+          item.val().senderUid == loggedInUserData.uid
+        ) {
           const user = { ...item.val() };
           const userInfo = {
             userName: user.reciverName,
@@ -55,7 +63,13 @@ const Friends_Groups_Components = ({ requName, isBtn }) => {
     });
   }, []);
 
+  const handleMsgClick = msgUser => {
+    dispatch(msgReciver(msgUser));
+  };
 
+  setTimeout(() => {
+    console.log(msgUserData);
+  }, 3000);
 
   return (
     <div className={requName === "groups" ? "request-box" : "fd_request"}>
@@ -75,6 +89,7 @@ const Friends_Groups_Components = ({ requName, isBtn }) => {
                 heading={user.userName}
                 subHeading={null}
                 isBtn={isBtn}
+                msgClick={() => handleMsgClick(user)}
               />
             ))
           ) : (
