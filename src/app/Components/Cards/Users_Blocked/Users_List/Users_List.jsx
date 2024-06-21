@@ -64,9 +64,18 @@ const Users_List = ({ variant, block }) => {
     let isFdArr = [];
 
     onValue(fdRef, snapShot => {
+      isFdArr = [];
       snapShot.forEach(item => {
         fdArr.push({ ...item.val(), id: item.key });
+        if (loggedInUserData.uid == item.val().senderUid) {
+          console.log("working");
+          isFdArr.push(item.val().senderUid + item.val().reciverUid);
+        } else if (loggedInUserData.uid == item.val().reciverUid) {
+          console.log("working");
+          isFdArr.push(item.val().reciverUid + item.val().senderUid);
+        }
       });
+      setIsFriend(isFdArr);
     });
 
     // Fetch all friend requests
@@ -82,6 +91,7 @@ const Users_List = ({ variant, block }) => {
         }
       });
       setfdRequest(requId);
+      console.log(requId);
       // Fetch all users
       onValue(starCountRef, snapShot => {
         arr = [];
@@ -99,17 +109,6 @@ const Users_List = ({ variant, block }) => {
                 fdRequArr.push({ id: item.key });
               }
             });
-
-            fdArr.forEach((fd) => {
-              isFdArr = []
-              console.log(fd);
-              if (loggedInUserData.uid == fd.senderUid) {
-                isFdArr.push(fd.senderUid + fd.reciverUid);
-              } else if (loggedInUserData.uid == fd.reciverUid) {
-                isFdArr.push(fd.reciverUid + fd.senderUid);
-              }
-            });
-            setIsFriend(isFdArr);
 
             arr.push({ ...item.val(), id: item.key, isRequ, requId, isFdArr });
           }
@@ -130,7 +129,6 @@ const Users_List = ({ variant, block }) => {
     { name: "john doe", txt: txt, img: "/sultan.jpg" },
     { name: "john", txt: txt, img: "/sultan.jpg" },
   ];
-  console.log(Isfriend);
   return (
     <div className="group-box">
       <Box>
@@ -143,10 +141,6 @@ const Users_List = ({ variant, block }) => {
         <div className="users_wrapper">
           {Users.length > 0 ? (
             Users.map((user, index) => {
-              console.log(Isfriend);
-              // console.log(loggedInUserData.uid + user.id);
-              // console.log(user.id + loggedInUserData.uid);
-
               return (
                 <SingleUsers_Blocked
                   key={index}

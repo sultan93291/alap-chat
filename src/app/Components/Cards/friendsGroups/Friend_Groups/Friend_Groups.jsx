@@ -26,7 +26,10 @@ const Friend_Group = ({ variant }) => {
     let arr = [];
     onValue(starCountRef, snapShot => {
       snapShot.forEach(item => {
-        if (item.val().senderUid !== loggedInUserData?.uid) {
+        if (
+          item.val().senderUid !== loggedInUserData?.uid &&
+          item.val().reciverUid == loggedInUserData.uid
+        ) {
           const user = { ...item.val() };
           const userInfo = {
             userName: user.senderName,
@@ -36,7 +39,10 @@ const Friend_Group = ({ variant }) => {
             key: item.key,
           };
           arr.push(userInfo);
-        } else if (item.val().reciverUid !== loggedInUserData?.uid) {
+        } else if (
+          item.val().reciverUid !== loggedInUserData?.uid &&
+          item.val().senderUid == loggedInUserData.uid
+        ) {
           const user = { ...item.val() };
           const userInfo = {
             userName: user.reciverName,

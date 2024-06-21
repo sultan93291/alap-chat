@@ -93,7 +93,7 @@ const Friends_Groups_Components = ({ requName, isBtn }) => {
               />
             ))
           ) : (
-            <Alert severity="info">No friends</Alert>
+            <Alert severity="info">NO Friends</Alert>
           )}
         </div>
       </Box>
