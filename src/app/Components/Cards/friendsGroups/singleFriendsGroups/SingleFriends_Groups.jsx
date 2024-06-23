@@ -1,8 +1,12 @@
 import { Avatar, Button, Typography } from "@mui/material";
 import "./singleFriends.css";
+import { borderRadius, padding } from "@mui/system";
+
 const SingleFriends_Groups = ({ src, heading, subHeading, time }) => {
+  
+
   return (
-    <div className="fd-details">
+    <div className="fd-details" >
       <div className="fd-img">
         <div>
           <Avatar alt=" not found " src={src} sx={{ width: 52, height: 54 }} />

@@ -1,3 +1,4 @@
+"use client";
 import { Avatar, Button, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import "./singleRequest.css";
@@ -17,12 +18,16 @@ const SingleRequest = ({
     setPath(path);
   }, []);
 
+  const isChatPage = path == "/chat";
+
+  const className = isChatPage ? "req-details hover_effect " : "req-details";
+
   const SingleUserCursor = {
     cursor: path == "/chat" ? "pointer" : "default",
   };
 
   return (
-    <div className="req-details" onClick={msgClick} style={SingleUserCursor}>
+    <div className={className} onClick={msgClick} style={SingleUserCursor}>
       <div className="req-img">
         <div>
           <Avatar alt=" not found " src={src} sx={{ width: 70, height: 70 }} />

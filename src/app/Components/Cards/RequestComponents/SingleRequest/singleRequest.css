@@ -6,6 +6,17 @@
   position: relative;
   padding-right: 25px;
 }
+
+.req-details.hover_effect {
+  padding: 8px 8px;
+  border-radius: 5px;
+  transition: linear all 0.3s;
+}
+
+.req-details.hover_effect:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 .req-details::after {
   content: "";
   height: 1px;
@@ -48,11 +59,10 @@
   font-size: 18px;
   text-transform: capitalize;
   font-weight: 600;
-  white-space: nowrap;       
-  overflow: hidden;          
+  white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
   width: 150px;
-
 }
 
 .requ_info p {
@@ -69,6 +79,6 @@
   flex-direction: column;
   row-gap: 28px;
   overflow-y: scroll;
-   overflow-x: hidden;
+  overflow-x: hidden;
   scroll-behavior: smooth;
 }

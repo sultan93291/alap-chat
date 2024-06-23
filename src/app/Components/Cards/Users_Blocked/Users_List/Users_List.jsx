@@ -68,10 +68,8 @@ const Users_List = ({ variant, block }) => {
       snapShot.forEach(item => {
         fdArr.push({ ...item.val(), id: item.key });
         if (loggedInUserData.uid == item.val().senderUid) {
-          console.log("working");
           isFdArr.push(item.val().senderUid + item.val().reciverUid);
         } else if (loggedInUserData.uid == item.val().reciverUid) {
-          console.log("working");
           isFdArr.push(item.val().reciverUid + item.val().senderUid);
         }
       });
@@ -118,17 +116,9 @@ const Users_List = ({ variant, block }) => {
     });
   }, [loggedInUserData, HandleCancelReq, HandleUserReq]);
 
-  const txt = "dummy txt";
+
   const time = "today , 8:56pm ";
-  const dummyUsers = [
-    { name: "goodenough", txt: txt, img: "/sultan.jpg" },
-    { name: "dekhtechi", txt: txt, img: "/sultan.jpg" },
-    { name: "jai hok", txt: txt, img: "/sultan.jpg" },
-    { name: "kando", txt: txt, img: "/sultan.jpg" },
-    { name: "elahi", txt: txt, img: "/sultan.jpg" },
-    { name: "john doe", txt: txt, img: "/sultan.jpg" },
-    { name: "john", txt: txt, img: "/sultan.jpg" },
-  ];
+ 
   return (
     <div className="group-box">
       <Box>

@@ -50,3 +50,12 @@
   margin-left: 20px;
 }
 
+.msgFd_wrapper {
+  padding: 5px 5px;
+  border-radius: 5px;
+  transition: linear all 0.3s ;
+}
+
+.msgFd_wrapper:hover {
+  box-shadow: 4px 5px 15px 5px rgba(0, 0, 0, 0.1);
+}

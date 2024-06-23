@@ -112,17 +112,73 @@
   margin-left: 20px;
 }
 
-.chatBox_wrapper{
+.chatBox_wrapper {
   padding-top: 56px;
   padding-left: 24px;
-
+}
+.inputBox_wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+}
+.inputBox_wrapper::after{
+  content: "";
+  height: 1px;
+  width: 698px;
+  background-color: rgba(0, 0, 0, 0.25);
+  position: absolute;
+  top: 0;
+  margin-top: -45px;
+  left: 0;
+  opacity: 0.7;
+  margin-left: 23.98px;
+}
+.input_wrapper {
+  width: 647px;
+  height: 65px;
+  display: flex;
+  position: relative;
 }
 
-.svg_text{
-  color: #000;
-font-family: Poppins;
-font-size: 16px;
-font-style: normal;
-font-weight: 500;
-line-height: normal;
+.logo_wrapper {
+  left: 0;
+  margin-left: -80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 15px;
+}
+.logo_wrapper svg {
+  height: 25px;
+  width: 25px;
+  color: #707070;
+  cursor: pointer;
+}
+.input_wrapper input {
+  height: 100%;
+  width: 100%;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  background: #f1f1f1;
+  padding: 0 25px;
+  padding-right: 100px;
+  font-size: 15px;
+}
+
+.send_btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  background: #5f35f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.send_btn svg {
+  color: #fff;
+  width: 18px;
+  height: 18px;
 }
