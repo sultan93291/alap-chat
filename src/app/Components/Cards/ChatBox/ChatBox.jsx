@@ -10,6 +10,7 @@ import { Alert } from "@mui/material";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
 import { CiCamera } from "react-icons/ci";
 import { BsSendFill } from "react-icons/bs";
+import { MdKeyboardVoice } from "react-icons/md";
 import {
   getDatabase,
   ref,
@@ -88,6 +89,10 @@ const ChatBox = () => {
   const handleEmoji = e => {
     setmsg(prevmsg => prevmsg + e.emoji);
   };
+
+  const handleVoiceMessage = () => {
+    
+  }
 
   useEffect(() => {
     const db = getDatabase();
@@ -222,9 +227,15 @@ const ChatBox = () => {
                   <CiCamera />
                 </div>
               </div>
-              <div onClick={handleMsgSend} className="send_btn">
-                <BsSendFill />
-              </div>
+              {msg.length > 0 ? (
+                <div onClick={handleMsgSend} className="send_btn">
+                  <BsSendFill />
+                </div>
+              ) : (
+                <div onClick={handleVoiceMessage} className="send_btn">
+                  <MdKeyboardVoice />
+                </div>
+              )}
             </div>
           </>
         ) : (
