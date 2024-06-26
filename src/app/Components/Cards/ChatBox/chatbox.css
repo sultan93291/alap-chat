@@ -257,6 +257,7 @@
   align-items: center;
   justify-content: center;
   column-gap: 15px;
+  position: relative;
 }
 .logo_wrapper svg {
   height: 25px;
@@ -290,4 +291,21 @@
   color: #fff;
   width: 18px;
   height: 18px;
+}
+
+
+
+.emoji_wrapper{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+.emojipicker{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin-right: 100px;
+  margin-bottom: 100px;
 }

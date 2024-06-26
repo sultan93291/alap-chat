@@ -1,6 +1,6 @@
 "use client";
 import { Box } from "@mui/system";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import "./chatbox.css";
 import { IoIosAdd } from "react-icons/io";
 import { Avatar, Button, Typography } from "@mui/material";
@@ -22,13 +22,15 @@ import {
 import firebaseConfig from "@/app/Config/firebaseConfig/firebaseConfig";
 import ScrollToBottom from "react-scroll-to-bottom";
 import moment from "moment";
+import EmojiPicker from "emoji-picker-react";
 
 const ChatBox = () => {
   const [msg, setmsg] = useState("");
   const [allMsg, setallMsg] = useState([]);
+  const [emojiShow, setemojiShow] = useState(false);
+  const emojiPickerRef = useRef(null);
   const loggedInUserData = useSelector(state => state.user.value);
   const msgUserData = useSelector(state => state.msgReciverInfo.value);
-
 
   const handleMsgData = e => {
     setmsg(e.target.value);
@@ -83,6 +85,10 @@ const ChatBox = () => {
     [msg, msgUserData, loggedInUserData]
   );
 
+  const handleEmoji = e => {
+    setmsg(prevmsg => prevmsg + e.emoji);
+  };
+
   useEffect(() => {
     const db = getDatabase();
     const msgRef = ref(db, "message");
@@ -109,7 +115,22 @@ const ChatBox = () => {
     });
   }, [msgUserData, loggedInUserData, handleMsgDeliver, handleMsgSend]);
 
+  const useOutsideClick = (ref, callback) => {
+    useEffect(() => {
+      const handleClickOutside = event => {
+        if (ref.current && !ref.current.contains(event.target)) {
+          callback();
+        }
+      };
 
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref, callback]);
+  };
+
+  useOutsideClick(emojiPickerRef, () => setemojiShow(false));
 
   return (
     <div className="chatbox">
@@ -182,7 +203,22 @@ const ChatBox = () => {
                   onKeyUp={handleMsgDeliver}
                 />
                 <div className="logo_wrapper">
-                  <MdOutlineEmojiEmotions />
+                  <div className="emoji_wrapper">
+                    <MdOutlineEmojiEmotions
+                      onClick={() => {
+                        setemojiShow(!emojiShow);
+                      }}
+                    />
+                    {emojiShow && (
+                      <div ref={emojiPickerRef} className="emojipicker">
+                        <EmojiPicker
+                          className="emojishow"
+                          onEmojiClick={handleEmoji}
+                          open={emojiShow}
+                        />
+                      </div>
+                    )}
+                  </div>
                   <CiCamera />
                 </div>
               </div>
