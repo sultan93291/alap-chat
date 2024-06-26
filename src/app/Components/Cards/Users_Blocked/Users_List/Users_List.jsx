@@ -118,7 +118,7 @@ const Users_List = ({ variant, block }) => {
 
 
   const time = "today , 8:56pm ";
- 
+
   return (
     <div className="group-box">
       <Box>

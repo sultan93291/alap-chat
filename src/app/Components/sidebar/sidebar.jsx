@@ -1,32 +1,33 @@
-"use client"
-import React from 'react'
-import "./sidebar.css"
+"use client";
+import React from "react";
+import "./sidebar.css";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
-import Link from 'next/link';
+import Link from "next/link";
 import { VscHome } from "react-icons/vsc";
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect } from "react";
+import { useState } from "react";
 import { AiFillMessage } from "react-icons/ai";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { IoMdSettings } from "react-icons/io";
 import { GrLogout } from "react-icons/gr";
-
+import { useSelector } from "react-redux";
 
 const SideBar = () => {
   const [pathName, setpathName] = useState();
+  const loggedInUserData = useSelector(state => state.user.value);
 
   useEffect(() => {
     const pathName = window.location.pathname;
-    setpathName(pathName)
-  },[])
+    setpathName(pathName);
+  }, []);
 
   return (
     <div className="sidebar">
       <div className="img-wrapper">
         <Avatar
           alt="Sultan "
-          src="/sultan.jpg"
+          src={loggedInUserData.photoURL}
           sx={{ width: 100, height: 100 }}
         />
       </div>
@@ -89,6 +90,6 @@ const SideBar = () => {
       </ul>
     </div>
   );
-}
+};
 
-export default SideBar
+export default SideBar;
