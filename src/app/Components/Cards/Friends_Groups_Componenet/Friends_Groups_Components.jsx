@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import SingleRequest from "../RequestComponents/SingleRequest/SingleRequest";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { Alert, Typography } from "@mui/material";
@@ -61,11 +61,13 @@ const Friends_Groups_Components = ({ requName, isBtn }) => {
 
       setfriends(arr);
     });
-  }, []);
+  }, [loggedInUserData, handleMsgClick]);
 
-  const handleMsgClick = msgUser => {
-    dispatch(msgReciver(msgUser));
-  };
+  const handleMsgClick = useCallback(
+    msgUser => {
+      dispatch(msgReciver(msgUser));
+    },
+  );
 
   setTimeout(() => {
     console.log(msgUserData);

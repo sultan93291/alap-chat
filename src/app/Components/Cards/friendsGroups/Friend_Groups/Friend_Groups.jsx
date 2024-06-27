@@ -28,7 +28,7 @@ const Friend_Group = ({ variant }) => {
       snapShot.forEach(item => {
         if (
           item.val().senderUid !== loggedInUserData?.uid &&
-          item.val().reciverUid == loggedInUserData.uid
+          item.val().reciverUid == loggedInUserData?.uid
         ) {
           const user = { ...item.val() };
           const userInfo = {
@@ -41,7 +41,7 @@ const Friend_Group = ({ variant }) => {
           arr.push(userInfo);
         } else if (
           item.val().reciverUid !== loggedInUserData?.uid &&
-          item.val().senderUid == loggedInUserData.uid
+          item.val().senderUid == loggedInUserData?.uid
         ) {
           const user = { ...item.val() };
           const userInfo = {
@@ -57,11 +57,11 @@ const Friend_Group = ({ variant }) => {
 
       setfriends(arr);
     });
-  }, []);
+  }, [loggedInUserData, friends]);
 
   const txt = "dummy txt";
   const time = "today , 8:56 pm";
-  
+
   return (
     <div className="group-box">
       <Box>

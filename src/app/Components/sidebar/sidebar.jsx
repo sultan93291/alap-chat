@@ -11,11 +11,31 @@ import { AiFillMessage } from "react-icons/ai";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { IoMdSettings } from "react-icons/io";
 import { GrLogout } from "react-icons/gr";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getAuth, signOut } from "firebase/auth";
+import { useRouter } from "next/navigation";
+import firebaseConfig from "@/app/Config/firebaseConfig/firebaseConfig";
+import { loggedInUser } from "@/app/Slice/AuthSlice";
 
 const SideBar = () => {
   const [pathName, setpathName] = useState();
   const loggedInUserData = useSelector(state => state.user.value);
+  const auth = getAuth();
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const handldeSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        router.push("/");
+      })
+      .then(() => {
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("loggedinUser");
+          dispatch(loggedInUser(null));
+        }
+      });
+  };
 
   useEffect(() => {
     const pathName = window.location.pathname;
@@ -27,7 +47,7 @@ const SideBar = () => {
       <div className="img-wrapper">
         <Avatar
           alt="Sultan "
-          src={loggedInUserData.photoURL}
+          src={loggedInUserData?.photoURL}
           sx={{ width: 100, height: 100 }}
         />
       </div>
@@ -83,7 +103,8 @@ const SideBar = () => {
           >
             {" "}
             <GrLogout
-              className={pathName === "/message" ? "active-icon" : "icons"}
+              onClick={handldeSignOut}
+              className={pathName === "/" ? "active-icon" : "icons"}
             />{" "}
           </Link>
         </li>

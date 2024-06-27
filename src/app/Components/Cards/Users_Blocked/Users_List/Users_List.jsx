@@ -67,9 +67,9 @@ const Users_List = ({ variant, block }) => {
       isFdArr = [];
       snapShot.forEach(item => {
         fdArr.push({ ...item.val(), id: item.key });
-        if (loggedInUserData.uid == item.val().senderUid) {
+        if (loggedInUserData?.uid == item.val().senderUid) {
           isFdArr.push(item.val().senderUid + item.val().reciverUid);
-        } else if (loggedInUserData.uid == item.val().reciverUid) {
+        } else if (loggedInUserData?.uid == item.val().reciverUid) {
           isFdArr.push(item.val().reciverUid + item.val().senderUid);
         }
       });
@@ -82,9 +82,9 @@ const Users_List = ({ variant, block }) => {
       requId = [];
       snapShot.forEach(requ => {
         allRequ.push({ id: requ.key, ...requ.val() });
-        if (loggedInUserData.uid == requ.val().senderUid) {
+        if (loggedInUserData?.uid == requ.val().senderUid) {
           requId.push(requ.val().senderUid + requ.val().reciverUid);
-        } else if (loggedInUserData.uid == requ.val().reciverUid) {
+        } else if (loggedInUserData?.uid == requ.val().reciverUid) {
           requId.push(requ.val().reciverUid + requ.val().senderUid);
         }
       });
@@ -139,20 +139,20 @@ const Users_List = ({ variant, block }) => {
                   time={time}
                   block={block}
                   isbtn={
-                    Isfriend.includes(loggedInUserData.uid + user.id) ||
-                    Isfriend.includes(user.id + loggedInUserData.uid)
+                    Isfriend.includes(loggedInUserData?.uid + user.id) ||
+                    Isfriend.includes(user.id + loggedInUserData?.uid)
                       ? false
                       : true
                   }
                   onClick={
-                    fdRequest.includes(loggedInUserData.uid + user.id) ||
-                    fdRequest.includes(user.id + loggedInUserData.uid)
+                    fdRequest.includes(loggedInUserData?.uid + user.id) ||
+                    fdRequest.includes(user.id + loggedInUserData?.uid)
                       ? () => HandleCancelReq(user)
                       : () => HandleUserReq(user)
                   }
                   isRequSent={
-                    fdRequest.includes(loggedInUserData.uid + user.id) ||
-                    fdRequest.includes(user.id + loggedInUserData.uid)
+                    fdRequest.includes(loggedInUserData?.uid + user.id) ||
+                    fdRequest.includes(user.id + loggedInUserData?.uid)
                       ? true
                       : false
                   }
