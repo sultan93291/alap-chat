@@ -2,15 +2,14 @@
 import { Box } from "@mui/system";
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import "./chatbox.css";
-import { IoIosAdd } from "react-icons/io";
 import { Avatar, Button, Typography } from "@mui/material";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { Alert } from "@mui/material";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
 import { CiCamera } from "react-icons/ci";
-import { BsSendFill } from "react-icons/bs";
-import { MdKeyboardVoice } from "react-icons/md";
+import { BsGlobe, BsSendFill } from "react-icons/bs";
+
 import {
   getDatabase,
   ref,
@@ -20,18 +19,67 @@ import {
   push,
   remove,
 } from "firebase/database";
+import {
+  getStorage,
+  ref as sref,
+  uploadBytes,
+  getDownloadURL,
+  uploadString,
+} from "firebase/storage";
 import firebaseConfig from "@/app/Config/firebaseConfig/firebaseConfig";
 import ScrollToBottom from "react-scroll-to-bottom";
 import moment from "moment";
 import EmojiPicker from "emoji-picker-react";
+import { AudioRecorder } from "react-audio-voice-recorder";
 
 const ChatBox = () => {
   const [msg, setmsg] = useState("");
   const [allMsg, setallMsg] = useState([]);
   const [emojiShow, setemojiShow] = useState(false);
+  const [blob, setBlob] = useState("");
+  const [audioUrl, setAudioUrl] = useState("");
+  const [audioSend, setAudioSend] = useState(false);
   const emojiPickerRef = useRef(null);
   const loggedInUserData = useSelector(state => state.user.value);
   const msgUserData = useSelector(state => state.msgReciverInfo.value);
+
+  const addAudioElement = blob => {
+    console.log(blob);
+    const url = URL.createObjectURL(blob);
+    const audio = document.createElement("audio");
+    audio.src = url;
+    audio.controls = true;
+    setAudioUrl(url);
+    setBlob(blob);
+    if (url && blob) {
+      setAudioSend(true);
+    }
+  };
+
+  const handleAudioUpload = () => {
+    const storage = getStorage();
+    const db = getDatabase();
+    const audioStorageRef = sref(storage, "voice/" + Date.now());
+    uploadBytes(audioStorageRef, blob).then(snapshot => {
+      getDownloadURL(audioStorageRef).then(downloadURL => {
+        set(push(ref(db, "message")), {
+          senderId: loggedInUserData.uid,
+          senderName: loggedInUserData.displayName,
+          senderEmail: loggedInUserData.email,
+          reciverId: msgUserData?.userId,
+          reciverEmail: msgUserData?.userEmail,
+          reciverName: msgUserData?.userName,
+          audio: downloadURL,
+          date: `${new Date().getFullYear()}-${
+            new Date().getMonth() + 1
+          }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getMilliseconds()}`,
+        }).then(() => {
+          setAudioUrl("");
+          setAudioSend(false);
+        });
+      });
+    });
+  };
 
   const handleMsgData = e => {
     setmsg(e.target.value);
@@ -90,10 +138,6 @@ const ChatBox = () => {
     setmsg(prevmsg => prevmsg + e.emoji);
   };
 
-  const handleVoiceMessage = () => {
-    
-  }
-
   useEffect(() => {
     const db = getDatabase();
     const msgRef = ref(db, "message");
@@ -137,6 +181,8 @@ const ChatBox = () => {
 
   useOutsideClick(emojiPickerRef, () => setemojiShow(false));
 
+  console.log(allMsg);
+
   return (
     <div className="chatbox">
       <Box>
@@ -172,7 +218,11 @@ const ChatBox = () => {
                     <div className="senderMsg_wrapper">
                       <div className="sender_msg_time_wrapper">
                         <div className="sender_msg_user_wrapper">
-                          <p className="sender_msg"> {item.message} </p>
+                          {item.message ? (
+                            <p className="sender_msg"> {item.message} </p>
+                          ) : (
+                            <audio controls src={item.audio} />
+                          )}
                           <Avatar src={loggedInUserData.photoURL} />
                         </div>
                         <span className="sender_date">
@@ -186,7 +236,11 @@ const ChatBox = () => {
                       <div className="reciver_msg_time_wrapper">
                         <div className="reciver_msg_user_wrapper">
                           <Avatar src={msgUserData.userPhoto} />
-                          <p className="reciver_msg"> {item.message} </p>
+                          {item.message ? (
+                            <p className="reciver_msg"> {item.message} </p>
+                          ) : (
+                            <audio controls src={item.audio} />
+                          )}
                         </div>
 
                         <span className="reciver_date">
@@ -231,9 +285,20 @@ const ChatBox = () => {
                 <div onClick={handleMsgSend} className="send_btn">
                   <BsSendFill />
                 </div>
+              ) : audioSend ? (
+                <div onClick={handleAudioUpload} className="send_btn">
+                  <BsSendFill />
+                </div>
               ) : (
-                <div onClick={handleVoiceMessage} className="send_btn">
-                  <MdKeyboardVoice />
+                <div className="audio_wrapper">
+                  <AudioRecorder
+                    onRecordingComplete={addAudioElement}
+                    audioTrackConstraints={{
+                      noiseSuppression: true,
+                      echoCancellation: true,
+                    }}
+                    downloadFileExtension={"mp3"}
+                  />
                 </div>
               )}
             </div>
