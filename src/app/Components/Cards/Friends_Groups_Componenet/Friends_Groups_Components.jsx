@@ -22,7 +22,6 @@ const Friends_Groups_Components = ({ requName, isBtn }) => {
   const [friends, setfriends] = useState([]);
   const loggedInUserData = useSelector(state => state.user.value);
   const msgUserData = useSelector(state => state.msgReciverInfo.value);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const db = getDatabase();
@@ -67,6 +66,7 @@ const Friends_Groups_Components = ({ requName, isBtn }) => {
     msgUser => {
       dispatch(msgReciver(msgUser));
     },
+    [msgUser]
   );
 
   setTimeout(() => {

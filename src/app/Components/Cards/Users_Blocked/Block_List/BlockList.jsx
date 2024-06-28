@@ -36,7 +36,7 @@ const BlockList = ({ variant, block }) => {
 
       setUsers(arr);
     });
-  }, []);
+  }, [loggedInUserData]);
 
   const handleUserReq = userData => {
     const db = getDatabase();
