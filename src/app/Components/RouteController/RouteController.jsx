@@ -20,6 +20,7 @@ const RouteController = ({ children }) => {
         (PathName === "/home" ||
           PathName === "/message" ||
           PathName === "/setting/" ||
+          PathName === "/chat" ||
           PathName === "/notification")
       ) {
         router.push("/");

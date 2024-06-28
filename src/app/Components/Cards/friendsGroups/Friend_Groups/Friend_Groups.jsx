@@ -54,10 +54,9 @@ const Friend_Group = ({ variant }) => {
           arr.push(userInfo);
         }
       });
-
       setfriends(arr);
     });
-  }, [loggedInUserData, friends]);
+  }, [loggedInUserData]);
 
   const txt = "dummy txt";
   const time = "today , 8:56 pm";

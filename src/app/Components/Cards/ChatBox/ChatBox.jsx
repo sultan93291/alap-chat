@@ -147,14 +147,14 @@ const ChatBox = () => {
       let arr = [];
       snapshot.forEach(item => {
         if (
-          item.val().senderId == loggedInUserData.uid &&
+          item.val().senderId == loggedInUserData?.uid &&
           item.val().reciverId == msgUserData?.userId
         ) {
           isSender = true;
           arr.push({ ...item.val(), id: item.key, isSender });
         } else if (
           item.val().senderId == msgUserData?.userId &&
-          item.val().reciverId == loggedInUserData.uid
+          item.val().reciverId == loggedInUserData?.uid
         ) {
           isReciver = true;
           arr.push({ ...item.val(), id: item.key, isReciver });
@@ -181,7 +181,7 @@ const ChatBox = () => {
 
   useOutsideClick(emojiPickerRef, () => setemojiShow(false));
 
-  console.log(allMsg);
+
 
   return (
     <div className="chatbox">
@@ -223,7 +223,7 @@ const ChatBox = () => {
                           ) : (
                             <audio controls src={item.audio} />
                           )}
-                          <Avatar src={loggedInUserData.photoURL} />
+                          <Avatar src={loggedInUserData?.photoURL} />
                         </div>
                         <span className="sender_date">
                           {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
@@ -260,6 +260,7 @@ const ChatBox = () => {
                   placeholder="Type a message"
                   value={msg}
                   onKeyUp={handleMsgDeliver}
+                  name="message"
                 />
                 <div className="logo_wrapper">
                   <div className="emoji_wrapper">

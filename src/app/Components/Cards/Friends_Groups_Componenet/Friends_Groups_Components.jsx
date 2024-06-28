@@ -22,6 +22,12 @@ const Friends_Groups_Components = ({ requName, isBtn }) => {
   const [friends, setfriends] = useState([]);
   const loggedInUserData = useSelector(state => state.user.value);
   const msgUserData = useSelector(state => state.msgReciverInfo.value);
+  const dispatch = useDispatch();
+
+  const handleMsgClick = useCallback(msgUser => {
+    
+    dispatch(msgReciver(msgUser));
+  }, [dispatch]);
 
   useEffect(() => {
     const db = getDatabase();
@@ -31,7 +37,7 @@ const Friends_Groups_Components = ({ requName, isBtn }) => {
       snapShot.forEach(item => {
         if (
           item.val().senderUid !== loggedInUserData?.uid &&
-          item.val().reciverUid == loggedInUserData.uid
+          item.val().reciverUid == loggedInUserData?.uid
         ) {
           const user = { ...item.val() };
           const userInfo = {
@@ -44,7 +50,7 @@ const Friends_Groups_Components = ({ requName, isBtn }) => {
           arr.push(userInfo);
         } else if (
           item.val().reciverUid !== loggedInUserData?.uid &&
-          item.val().senderUid == loggedInUserData.uid
+          item.val().senderUid == loggedInUserData?.uid
         ) {
           const user = { ...item.val() };
           const userInfo = {
@@ -61,13 +67,6 @@ const Friends_Groups_Components = ({ requName, isBtn }) => {
       setfriends(arr);
     });
   }, [loggedInUserData, handleMsgClick]);
-
-  const handleMsgClick = useCallback(
-    msgUser => {
-      dispatch(msgReciver(msgUser));
-    },
-    [msgUser]
-  );
 
   setTimeout(() => {
     console.log(msgUserData);
