@@ -78,7 +78,7 @@ const ChatBox = () => {
         });
       });
     });
-  });
+  }, [image, loggedInUserData, msgUserData]);
 
   const addAudioElement = blob => {
     console.log(blob);
@@ -147,7 +147,6 @@ const ChatBox = () => {
   const handleMsgDeliver = useCallback(
     e => {
       const db = getDatabase();
-      console.log(msg);
       console.log(msgUserData);
       if (e.key == "Enter" && msgUserData && msg.length > 0) {
         set(push(ref(db, "message")), {
