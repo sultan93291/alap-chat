@@ -2,11 +2,13 @@
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { ThreeDots } from "react-loader-spinner";
+import { useSelector } from "react-redux";
 
 const RouteController = ({ children }) => {
   const router = useRouter();
   const [Loading, setLoading] = useState(true);
   const [PathName, setPathName] = useState(router.asPath);
+  const loggedInUserData = useSelector(state => state.user.value);
   useEffect(() => {
     const path = window.location.pathname;
     setPathName(path);
@@ -14,9 +16,9 @@ const RouteController = ({ children }) => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const loggedInUser = localStorage.getItem("loggedinUser");
+      // const loggedInUser = localStorage.getItem("loggedinUser");
       if (
-        !loggedInUser &&
+        !loggedInUserData &&
         (PathName === "/home" ||
           PathName === "/message" ||
           PathName === "/setting/" ||
@@ -25,25 +27,21 @@ const RouteController = ({ children }) => {
       ) {
         router.push("/");
         if (PathName === "/") {
-          setTimeout(() => {
-            setLoading(false);
-          }, 5000);
+          setLoading(false);
         }
       } else if (
-        loggedInUser &&
+        loggedInUserData &&
         (PathName === "/" || PathName === "/register")
       ) {
         router.push("/home");
         if (PathName === "/home") {
-          setTimeout(() => {
-            setLoading(false);
-          }, 5000);
+          setLoading(false);
         }
       } else {
         setLoading(false);
       }
     }
-  }, [router, PathName]);
+  }, [router, PathName, loggedInUserData]);
 
   useEffect(() => {
     if (!router || !router.events) {
@@ -57,7 +55,7 @@ const RouteController = ({ children }) => {
     return () => {
       router.events.off("routeChangeComplete", handleRouteChange);
     };
-  }, [router]);
+  }, [router, loggedInUserData, PathName]);
 
   if (Loading) {
     return (
