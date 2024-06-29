@@ -31,6 +31,7 @@ import ScrollToBottom from "react-scroll-to-bottom";
 import moment from "moment";
 import EmojiPicker from "emoji-picker-react";
 import { AudioRecorder } from "react-audio-voice-recorder";
+import Image from "next/image";
 
 const ChatBox = () => {
   const [msg, setmsg] = useState("");
@@ -39,9 +40,45 @@ const ChatBox = () => {
   const [blob, setBlob] = useState("");
   const [audioUrl, setAudioUrl] = useState("");
   const [audioSend, setAudioSend] = useState(false);
+  const [imageSend, setimageSend] = useState(false);
+  const [image, setimage] = useState("");
+  const [ImgUrl, setImgUrl] = useState("");
   const emojiPickerRef = useRef(null);
   const loggedInUserData = useSelector(state => state.user.value);
   const msgUserData = useSelector(state => state.msgReciverInfo.value);
+
+  const handleImage = e => {
+    if (e.target.files[0]) {
+      setimage(e.target.files[0]);
+      setimageSend(true);
+    }
+  };
+
+  const handleImageUpload = useCallback(() => {
+    const storage = getStorage();
+    const db = getDatabase();
+    if (!image) return;
+    const imageStorageRef = sref(storage, "images/" + `${image.name}`);
+    uploadBytes(imageStorageRef, image).then(snapshot => {
+      getDownloadURL(imageStorageRef).then(downloadURL => {
+        set(push(ref(db, "message")), {
+          senderId: loggedInUserData.uid,
+          senderName: loggedInUserData.displayName,
+          senderEmail: loggedInUserData.email,
+          reciverId: msgUserData?.userId,
+          reciverEmail: msgUserData?.userEmail,
+          reciverName: msgUserData?.userName,
+          imageUrl: downloadURL,
+          date: `${new Date().getFullYear()}-${
+            new Date().getMonth() + 1
+          }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getMilliseconds()}`,
+        }).then(() => {
+          setimage("");
+          setimageSend(false);
+        });
+      });
+    });
+  });
 
   const addAudioElement = blob => {
     console.log(blob);
@@ -162,7 +199,13 @@ const ChatBox = () => {
       });
       setallMsg(arr);
     });
-  }, [msgUserData, loggedInUserData, handleMsgDeliver, handleMsgSend]);
+  }, [
+    msgUserData,
+    loggedInUserData,
+    handleMsgDeliver,
+    handleMsgSend,
+    handleImageUpload,
+  ]);
 
   const useOutsideClick = (ref, callback) => {
     useEffect(() => {
@@ -180,8 +223,6 @@ const ChatBox = () => {
   };
 
   useOutsideClick(emojiPickerRef, () => setemojiShow(false));
-
-
 
   return (
     <div className="chatbox">
@@ -220,6 +261,14 @@ const ChatBox = () => {
                         <div className="sender_msg_user_wrapper">
                           {item.message ? (
                             <p className="sender_msg"> {item.message} </p>
+                          ) : item.imageUrl ? (
+                            <Image
+                              width={350}
+                              height={350}
+                              src={item.imageUrl}
+                              alt="sender img"
+                              className="send_reciveImg"
+                            />
                           ) : (
                             <audio controls src={item.audio} />
                           )}
@@ -238,6 +287,14 @@ const ChatBox = () => {
                           <Avatar src={msgUserData.userPhoto} />
                           {item.message ? (
                             <p className="reciver_msg"> {item.message} </p>
+                          ) : item.imageUrl ? (
+                            <Image
+                              width={350}
+                              height={350}
+                              src={item.imageUrl}
+                              alt="sender img"
+                              className="send_reciveImg"
+                            />
                           ) : (
                             <audio controls src={item.audio} />
                           )}
@@ -279,11 +336,23 @@ const ChatBox = () => {
                       </div>
                     )}
                   </div>
-                  <CiCamera />
+                  <div className="image_file_wrapper">
+                    <input
+                      type="file"
+                      name="image"
+                      onChange={handleImage}
+                      accept="image/*"
+                    />
+                    <CiCamera />
+                  </div>
                 </div>
               </div>
               {msg.length > 0 ? (
                 <div onClick={handleMsgSend} className="send_btn">
+                  <BsSendFill />
+                </div>
+              ) : imageSend ? (
+                <div onClick={handleImageUpload} className="send_btn">
                   <BsSendFill />
                 </div>
               ) : audioSend ? (
