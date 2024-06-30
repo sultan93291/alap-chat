@@ -37,6 +37,10 @@ const SideBar = () => {
       });
   };
 
+  const handleProfile = () => {
+    router.push(`/profile/${loggedInUserData.uid}`);
+  };
+
   useEffect(() => {
     const pathName = window.location.pathname;
     setpathName(pathName);
@@ -44,7 +48,7 @@ const SideBar = () => {
 
   return (
     <div className="sidebar">
-      <div className="img-wrapper">
+      <div style={{cursor:"pointer"}} onClick={handleProfile} className="img-wrapper">
         <Avatar
           alt="Sultan "
           src={loggedInUserData?.photoURL}
