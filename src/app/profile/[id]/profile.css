@@ -105,7 +105,34 @@
   z-index: 666;
 }
 
-.profile_uploader svg {
+.profile_input_logo {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile_input_logo input {
+  height: 100%;
+  height: 35px;
+  width: 35px;
+  opacity: 0;
+  z-index: 9;
+  cursor: pointer;
+}
+
+.profile_input_logo svg {
   height: 25px;
   width: 25px;
+  position: absolute;
+  z-index: 1;
+  cursor: pointer;
+}
+.info_wrapper {
+  margin-right: 320px;
+  margin-top: 20px;
+}
+
+.infor_name_wrapper {
+  font-size: 40px;
 }

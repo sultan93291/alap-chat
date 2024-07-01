@@ -16,9 +16,11 @@ import { getAuth, signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import firebaseConfig from "@/app/Config/firebaseConfig/firebaseConfig";
 import { loggedInUser } from "@/app/Slice/AuthSlice";
+import { getDatabase, onValue, ref } from "firebase/database";
 
 const SideBar = () => {
   const [pathName, setpathName] = useState();
+  const [User, setUser] = useState("");
   const loggedInUserData = useSelector(state => state.user.value);
   const auth = getAuth();
   const router = useRouter();
@@ -46,12 +48,32 @@ const SideBar = () => {
     setpathName(pathName);
   }, []);
 
+  useEffect(() => {
+    const db = getDatabase();
+    const starCountRef = ref(db, "/users");
+    onValue(starCountRef, snapShot => {
+      let user = null;
+      snapShot.forEach(item => {
+        if (item.key == loggedInUserData.uid) {
+          user = { ...item.val(), id: item.key };
+        }
+      });
+      setUser(user);
+    });
+  }, [loggedInUserData?.uid]);
+
+  console.log(User)
+
   return (
     <div className="sidebar">
-      <div style={{cursor:"pointer"}} onClick={handleProfile} className="img-wrapper">
+      <div
+        style={{ cursor: "pointer" }}
+        onClick={handleProfile}
+        className="img-wrapper"
+      >
         <Avatar
           alt="Sultan "
-          src={loggedInUserData?.photoURL}
+          src={User?.photoUrl}
           sx={{ width: 100, height: 100 }}
         />
       </div>
