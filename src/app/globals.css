@@ -36,7 +36,7 @@ a {
 }
 
 .Box_root {
-  height: 1000px;
+  height: auto;
   width: 756px;
   background-color: #fff;
   padding-top: 225px;
@@ -220,7 +220,7 @@ a {
   height: 62.52px;
   transform: rotate(-0.443deg);
   border-radius: 8.336px;
-  border: 0.834px solid rgba(3, 1, 76,0.3);
+  border: 0.834px solid rgba(3, 1, 76, 0.3);
   display: flex;
   column-gap: 10px;
   align-items: center;
@@ -245,3 +245,58 @@ a {
   letter-spacing: 0.267px;
   text-transform: capitalize;
 }
+
+
+/* login page responsive design started here  */
+@media (max-width: 360px) {
+  .Box_root {
+    height: 100vh;
+    width: 100vw;
+    padding-top: 50px;
+    padding-left: 20px;
+    padding-bottom: 12px;
+    padding-right: 5px;
+    overflow: hidden;
+    position: relative;
+  }
+  .img_box {
+    display: none;
+  }
+  .img_box img {
+    display: none;
+  }
+  .login_img_wrapper {
+    width: 200.904px;
+    height: 52.52px;
+  }
+  .loginInp_Wrapper {
+    width: 250px;
+  }
+
+  .inp_btn_wrapper {
+    width: 250px;
+    position: relative;
+  }
+  .inp_btn_wrapper .inp_Wrapper div input {
+    width: 80%;
+  }
+  .inp_btn_wrapper .btn_wrapper button {
+    width: 224.902px;
+    height: 61.846px;
+    font-size: 16px;
+  }
+  .heading_wrapper span {
+    font-size: 18px;
+  }
+
+  .login_btn_wrapper button {
+    width: 224.902px;
+    height: 61.846px;
+    font-size: 16px;
+  }
+  .left-wrapper {
+    display: none;
+  }
+}
+
+/* login page responsive design ended  here  */

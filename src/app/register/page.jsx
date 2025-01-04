@@ -3,6 +3,7 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import Image from "next/image";
 import Link from "next/link";
+import "../../app/globals.css";
 
 import {
   FromContainer,
@@ -183,7 +184,7 @@ const Page = () => {
             </form>
           </div>
         </Grid>
-        <Grid item xs={6}>
+        <Grid style={{ }} item xs={6}>
           <div className="img_box">
             <Image width={684} height={1024} src="/hero.jpg" alt="hero.jpg" />
           </div>

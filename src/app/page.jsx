@@ -9,7 +9,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useFormik } from "formik";
 
-
 import * as Yup from "yup";
 import loginValidation from "./Components/Validation/loginValidation";
 import "./globals.css";
